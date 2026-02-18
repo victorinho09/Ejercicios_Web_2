@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/esquemas/pelicula.schema.json",
+  "title": "Ficha de película",
+  "required": [
+    "titulo",
+    "año",
+    "clasificacionEdad",
+    "duracion",
+    "imdb",
+    "generos",
+    "sinopsis",
+    "creditos",
+    "streaming"
+  ],
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Título de la película"
+    },
+    "año": {
+      "type": "integer",
+      "minimum": 1888,
+      "maximum": 2100,
+      "description": "Año de estreno"
+    },
+    "clasificacionEdad": {
+      "type": "integer",
+      "description": "Clasificación por edad"
+    },
+    "duracion": {
+      "type": "object",
+      "required": ["minutosTotales"],
+      "properties": {
+        "minutosTotales": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Duración total en minutos"
+        }
+      }
+    },
+    "imdb": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["puntuacion", "escala"],
+      "properties": {
+        "puntuacion": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "multipleOf": 0.1,
+          "description": "Puntuación media"
+        },
+        "escala": {
+          "type": "integer",
+          "const": 10,
+          "description": "Escala de la puntuación"
+        }
+      }
+    },
+    "popularidad": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posicion", "variacion"],
+      "properties": {
+        "posicion": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Posición en ranking de popularidad"
+        },
+        "variacion": {
+          "type": "integer",
+          "description": "Cambio respecto al periodo anterior (puede ser negativo)"
+        }
+      }
+    },
+    "generos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Lista de géneros o etiquetas"
+    },
+    "sinopsis": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Descripción breve de la película"
+    },
+    "creditos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["director", "guionistas"],
+      "properties": {
+        "director": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Nombre del director"
+        },
+        "guionistas": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Lista de guionistas"
+        }
+      }
+    },
+    "streaming": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plataforma"],
+      "properties": {
+        "plataforma": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Plataforma donde está disponible (por ejemplo, 'Netflix')"
+        }
+      }
+    }
+  }
+}

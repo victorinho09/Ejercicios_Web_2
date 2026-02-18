@@ -1,0 +1,22 @@
+{
+  "titulo": "Frankenstein",
+  "año": 2025,
+  "clasificacionEdad": 16,
+  "duracion": {
+    "minutosTotales": 149,
+    "texto": "2h 29min",
+    "desglose": { "horas": 2, "minutos": 29 }
+  },
+  "imdb": { "puntuacion": 7.4, "escala": 10 },
+  "generos": ["Drama psicológico", "Fantasía oscura"],
+  "sinopsis": "Un experimento desafía los límites de la vida y desencadena consecuencias irreversibles.",
+  "creditos": {
+    "director": "Guillermo del Toro",
+    "guionistas": ["Guillermo del Toro", "Mary Shelley"]
+  },
+  "streaming": { "plataforma": "Netflix" },
+  "extra": {
+    "multimedia": { "videos": 16, "imagenes": "99+" },
+    "etiquetas": ["trailer", "estreno"]
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "tipo": "cabecera",
+    "valor": "Ficha de película"
+  },
+  {
+    "tipo": "datos",
+    "pelicula": {
+      "titulo": "Frankenstein",
+      "año": 2025,
+      "clasificacionEdad": 16,
+      "duracion": { "minutosTotales": 149 },
+      "imdb": { "puntuacion": 7.4, "escala": 10 },
+      "generos": ["Horror psicológico"],
+      "sinopsis": "La creación de una vida imposible convierte la ambición humana en tragedia.",
+      "creditos": {
+        "director": "Guillermo del Toro",
+        "guionistas": ["Mary Shelley"]
+      },
+      "streaming": { "plataforma": "Netflix" }
+    }
+  }
+]
