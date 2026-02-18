@@ -1,0 +1,10 @@
+{
+	"name": "sol",
+    "artist": "victor vega",
+    "dimension": {
+      	"width": 2.3,
+        "height": 4.5
+    },
+    "description": "un sol muy bonito",
+    "tags": []
+}
