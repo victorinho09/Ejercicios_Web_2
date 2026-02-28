@@ -1,0 +1,7 @@
+{
+  "orderId": "ord123",
+  "items": [
+    { "name": "item1", "qty": 2 }
+  ],
+  "total": 10
+}
