@@ -1,0 +1,12 @@
+{
+  "name": "cine-api",
+  "version": "1.0.0",
+  "description": "REST API para la cartelera y sesiones de un cine",
+  "main": "app.js",
+  "scripts": {
+    "start": "node bin/www"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
