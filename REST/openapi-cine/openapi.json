@@ -1,0 +1,1196 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Cine API",
+    "description": "API REST para gestión de películas, salas y sesiones de un cine",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Cine API Support"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor de desarrollo local"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Movies",
+      "description": "Gestión de películas"
+    },
+    {
+      "name": "Rooms",
+      "description": "Gestión de salas"
+    },
+    {
+      "name": "Sessions",
+      "description": "Gestión de sesiones de cine"
+    }
+  ],
+  "paths": {
+    "/movies": {
+      "get": {
+        "tags": ["Movies"],
+        "summary": "Listar todas las películas",
+        "description": "Obtiene una lista de todas las películas disponibles en el sistema",
+        "operationId": "getMovies",
+        "responses": {
+          "200": {
+            "description": "Lista de películas obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Dune: Part Two",
+                    "director": "Denis Villeneuve",
+                    "duration": 166,
+                    "genre": "Ciencia ficción",
+                    "rating": "PG-13",
+                    "synopsis": "La épica continuación de la saga de Paul Atreides en Arrakis."
+                  },
+                  {
+                    "id": 2,
+                    "title": "Oppenheimer",
+                    "director": "Christopher Nolan",
+                    "duration": 180,
+                    "genre": "Drama",
+                    "rating": "R",
+                    "synopsis": "La historia del padre de la bomba atómica."
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Movies"],
+        "summary": "Crear una nueva película",
+        "description": "Crea una nueva película en el sistema",
+        "operationId": "createMovie",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieInput"
+              },
+              "example": {
+                "title": "Inception",
+                "director": "Christopher Nolan",
+                "duration": 148,
+                "genre": "Ciencia ficción",
+                "rating": "PG-13",
+                "synopsis": "Un ladrón que roba secretos corporativos mediante el uso de tecnología de sueños compartidos."
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Película creada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                },
+                "example": {
+                  "id": 3,
+                  "title": "Inception",
+                  "director": "Christopher Nolan",
+                  "duration": 148,
+                  "genre": "Ciencia ficción",
+                  "rating": "PG-13",
+                  "synopsis": "Un ladrón que roba secretos corporativos mediante el uso de tecnología de sueños compartidos."
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "get": {
+        "tags": ["Movies"],
+        "summary": "Obtener una película por ID",
+        "description": "Obtiene los detalles de una película específica mediante su ID",
+        "operationId": "getMovieById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MovieId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Película encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                },
+                "example": {
+                  "id": 1,
+                  "title": "Dune: Part Two",
+                  "director": "Denis Villeneuve",
+                  "duration": 166,
+                  "genre": "Ciencia ficción",
+                  "rating": "PG-13",
+                  "synopsis": "La épica continuación de la saga de Paul Atreides en Arrakis."
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/MovieNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Movies"],
+        "summary": "Actualizar una película completa",
+        "description": "Actualiza todos los campos de una película existente",
+        "operationId": "updateMovie",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MovieId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieInput"
+              },
+              "example": {
+                "title": "Dune: Part Two (Extended)",
+                "director": "Denis Villeneuve",
+                "duration": 180,
+                "genre": "Ciencia ficción",
+                "rating": "PG-13",
+                "synopsis": "La épica continuación de la saga de Paul Atreides en Arrakis - Versión extendida."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Película actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/MovieNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Movies"],
+        "summary": "Actualizar parcialmente una película",
+        "description": "Actualiza uno o más campos de una película existente",
+        "operationId": "patchMovie",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MovieId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoviePatch"
+              },
+              "example": {
+                "rating": "R",
+                "synopsis": "Nueva sinopsis actualizada."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Película actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/MovieNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Movies"],
+        "summary": "Eliminar una película",
+        "description": "Elimina una película del sistema",
+        "operationId": "deleteMovie",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MovieId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Película eliminada correctamente"
+          },
+          "404": {
+            "$ref": "#/components/responses/MovieNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Listar todas las salas",
+        "description": "Obtiene una lista de todas las salas disponibles en el cine",
+        "operationId": "getRooms",
+        "responses": {
+          "200": {
+            "description": "Lista de salas obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Sala 1",
+                    "capacity": 120,
+                    "type": "standard"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Sala 2",
+                    "capacity": 80,
+                    "type": "VIP"
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Rooms"],
+        "summary": "Crear una nueva sala",
+        "description": "Crea una nueva sala en el cine",
+        "operationId": "createRoom",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomInput"
+              },
+              "example": {
+                "name": "Sala 3",
+                "capacity": 150,
+                "type": "IMAX"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sala creada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                },
+                "example": {
+                  "id": 3,
+                  "name": "Sala 3",
+                  "capacity": 150,
+                  "type": "IMAX"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
+        "tags": ["Rooms"],
+        "summary": "Obtener una sala por ID",
+        "description": "Obtiene los detalles de una sala específica mediante su ID",
+        "operationId": "getRoomById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RoomId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sala encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                },
+                "example": {
+                  "id": 1,
+                  "name": "Sala 1",
+                  "capacity": 120,
+                  "type": "standard"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/RoomNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Rooms"],
+        "summary": "Actualizar una sala completa",
+        "description": "Actualiza todos los campos de una sala existente",
+        "operationId": "updateRoom",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RoomId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomInput"
+              },
+              "example": {
+                "name": "Sala Premium 1",
+                "capacity": 130,
+                "type": "VIP"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sala actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/RoomNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Rooms"],
+        "summary": "Actualizar parcialmente una sala",
+        "description": "Actualiza uno o más campos de una sala existente",
+        "operationId": "patchRoom",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RoomId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomPatch"
+              },
+              "example": {
+                "capacity": 125
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sala actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/RoomNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Rooms"],
+        "summary": "Eliminar una sala",
+        "description": "Elimina una sala del sistema",
+        "operationId": "deleteRoom",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/RoomId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sala eliminada correctamente"
+          },
+          "404": {
+            "$ref": "#/components/responses/RoomNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "get": {
+        "tags": ["Sessions"],
+        "summary": "Listar todas las sesiones",
+        "description": "Obtiene una lista de todas las sesiones. Se puede filtrar por película o sala mediante query parameters.",
+        "operationId": "getSessions",
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "query",
+            "description": "Filtrar sesiones por ID de película",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "roomId",
+            "in": "query",
+            "description": "Filtrar sesiones por ID de sala",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de sesiones obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "movieId": 1,
+                    "roomId": 1,
+                    "startTime": "2026-03-05T16:00:00",
+                    "price": 9.50,
+                    "availableSeats": 120
+                  },
+                  {
+                    "id": 2,
+                    "movieId": 2,
+                    "roomId": 2,
+                    "startTime": "2026-03-05T19:30:00",
+                    "price": 14.00,
+                    "availableSeats": 80
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Sessions"],
+        "summary": "Crear una nueva sesión",
+        "description": "Crea una nueva sesión vinculando una película con una sala y horario",
+        "operationId": "createSession",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionInput"
+              },
+              "example": {
+                "movieId": 1,
+                "roomId": 1,
+                "startTime": "2026-03-06T20:00:00",
+                "price": 10.50,
+                "availableSeats": 120
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sesión creada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                },
+                "example": {
+                  "id": 3,
+                  "movieId": 1,
+                  "roomId": 1,
+                  "startTime": "2026-03-06T20:00:00",
+                  "price": 10.50,
+                  "availableSeats": 120
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/sessions/{id}": {
+      "get": {
+        "tags": ["Sessions"],
+        "summary": "Obtener una sesión por ID",
+        "description": "Obtiene los detalles de una sesión específica mediante su ID",
+        "operationId": "getSessionById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sesión encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                },
+                "example": {
+                  "id": 1,
+                  "movieId": 1,
+                  "roomId": 1,
+                  "startTime": "2026-03-05T16:00:00",
+                  "price": 9.50,
+                  "availableSeats": 120
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/SessionNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Sessions"],
+        "summary": "Actualizar una sesión completa",
+        "description": "Actualiza todos los campos de una sesión existente",
+        "operationId": "updateSession",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionInput"
+              },
+              "example": {
+                "movieId": 1,
+                "roomId": 2,
+                "startTime": "2026-03-06T18:00:00",
+                "price": 12.00,
+                "availableSeats": 80
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sesión actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/SessionNotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Sessions"],
+        "summary": "Actualizar parcialmente una sesión",
+        "description": "Actualiza uno o más campos de una sesión existente",
+        "operationId": "patchSession",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionPatch"
+              },
+              "example": {
+                "price": 11.50,
+                "availableSeats": 100
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sesión actualizada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/SessionNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Sessions"],
+        "summary": "Eliminar una sesión",
+        "description": "Elimina una sesión del sistema",
+        "operationId": "deleteSession",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/SessionId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sesión eliminada correctamente"
+          },
+          "404": {
+            "$ref": "#/components/responses/SessionNotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "MovieId": {
+        "name": "id",
+        "in": "path",
+        "description": "ID de la película",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 1
+        }
+      },
+      "RoomId": {
+        "name": "id",
+        "in": "path",
+        "description": "ID de la sala",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 1
+        }
+      },
+      "SessionId": {
+        "name": "id",
+        "in": "path",
+        "description": "ID de la sesión",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "example": 1
+        }
+      }
+    },
+    "schemas": {
+      "Movie": {
+        "type": "object",
+        "required": ["id", "title", "director", "duration"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único de la película",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Título de la película",
+            "example": "Dune: Part Two"
+          },
+          "director": {
+            "type": "string",
+            "description": "Director de la película",
+            "example": "Denis Villeneuve"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duración de la película en minutos",
+            "example": 166
+          },
+          "genre": {
+            "type": "string",
+            "description": "Género de la película",
+            "example": "Ciencia ficción"
+          },
+          "rating": {
+            "type": "string",
+            "description": "Clasificación por edades",
+            "example": "PG-13"
+          },
+          "synopsis": {
+            "type": "string",
+            "description": "Sinopsis de la película",
+            "example": "La épica continuación de la saga de Paul Atreides en Arrakis."
+          }
+        }
+      },
+      "MovieInput": {
+        "type": "object",
+        "required": ["title", "director", "duration"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Título de la película",
+            "example": "Inception"
+          },
+          "director": {
+            "type": "string",
+            "description": "Director de la película",
+            "example": "Christopher Nolan"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duración de la película en minutos",
+            "example": 148
+          },
+          "genre": {
+            "type": "string",
+            "description": "Género de la película",
+            "example": "Ciencia ficción"
+          },
+          "rating": {
+            "type": "string",
+            "description": "Clasificación por edades",
+            "example": "PG-13"
+          },
+          "synopsis": {
+            "type": "string",
+            "description": "Sinopsis de la película",
+            "example": "Un ladrón que roba secretos corporativos mediante el uso de tecnología de sueños compartidos."
+          }
+        }
+      },
+      "MoviePatch": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Título de la película"
+          },
+          "director": {
+            "type": "string",
+            "description": "Director de la película"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duración de la película en minutos"
+          },
+          "genre": {
+            "type": "string",
+            "description": "Género de la película"
+          },
+          "rating": {
+            "type": "string",
+            "description": "Clasificación por edades"
+          },
+          "synopsis": {
+            "type": "string",
+            "description": "Sinopsis de la película"
+          }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "required": ["id", "name", "capacity"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único de la sala",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la sala",
+            "example": "Sala 1"
+          },
+          "capacity": {
+            "type": "integer",
+            "description": "Capacidad de asientos de la sala",
+            "example": 120
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de sala",
+            "example": "standard"
+          }
+        }
+      },
+      "RoomInput": {
+        "type": "object",
+        "required": ["name", "capacity"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre de la sala",
+            "example": "Sala 3"
+          },
+          "capacity": {
+            "type": "integer",
+            "description": "Capacidad de asientos de la sala",
+            "example": 150
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de sala",
+            "example": "IMAX"
+          }
+        }
+      },
+      "RoomPatch": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nombre de la sala"
+          },
+          "capacity": {
+            "type": "integer",
+            "description": "Capacidad de asientos de la sala"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo de sala"
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "required": ["id", "movieId", "roomId", "startTime"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único de la sesión",
+            "example": 1
+          },
+          "movieId": {
+            "type": "integer",
+            "description": "ID de la película proyectada",
+            "example": 1
+          },
+          "roomId": {
+            "type": "integer",
+            "description": "ID de la sala donde se proyecta",
+            "example": 1
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha y hora de inicio de la sesión",
+            "example": "2026-03-05T16:00:00"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de la entrada",
+            "example": 9.50
+          },
+          "availableSeats": {
+            "type": "integer",
+            "description": "Número de asientos disponibles",
+            "example": 120
+          }
+        }
+      },
+      "SessionInput": {
+        "type": "object",
+        "required": ["movieId", "roomId", "startTime"],
+        "properties": {
+          "movieId": {
+            "type": "integer",
+            "description": "ID de la película proyectada",
+            "example": 1
+          },
+          "roomId": {
+            "type": "integer",
+            "description": "ID de la sala donde se proyecta",
+            "example": 1
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha y hora de inicio de la sesión",
+            "example": "2026-03-06T20:00:00"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de la entrada",
+            "example": 10.50
+          },
+          "availableSeats": {
+            "type": "integer",
+            "description": "Número de asientos disponibles",
+            "example": 120
+          }
+        }
+      },
+      "SessionPatch": {
+        "type": "object",
+        "properties": {
+          "movieId": {
+            "type": "integer",
+            "description": "ID de la película proyectada"
+          },
+          "roomId": {
+            "type": "integer",
+            "description": "ID de la sala donde se proyecta"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha y hora de inicio de la sesión"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Precio de la entrada"
+          },
+          "availableSeats": {
+            "type": "integer",
+            "description": "Número de asientos disponibles"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Mensaje de error",
+            "example": "Recurso no encontrado"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Petición incorrecta - faltan campos obligatorios",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "Los campos title, director y duration son obligatorios"
+            }
+          }
+        }
+      },
+      "UnprocessableEntity": {
+        "description": "Entidad no procesable - referencias inválidas",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "invalidMovie": {
+                "value": {
+                  "error": "La película con id 99 no existe"
+                }
+              },
+              "invalidRoom": {
+                "value": {
+                  "error": "La sala con id 99 no existe"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MovieNotFound": {
+        "description": "Película no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "Película no encontrada"
+            }
+          }
+        }
+      },
+      "RoomNotFound": {
+        "description": "Sala no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "Sala no encontrada"
+            }
+          }
+        }
+      },
+      "SessionNotFound": {
+        "description": "Sesión no encontrada",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "Sesión no encontrada"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Error interno del servidor",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": "Error interno del servidor"
+            }
+          }
+        }
+      }
+    }
+  }
+}
