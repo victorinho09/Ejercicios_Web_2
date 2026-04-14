@@ -15,7 +15,7 @@
 ## Pregunta 3
 
 - use sample_airbnb
-- db.listingsAndReviews.findOne( { number_of_reviews: 50 , accommodates: {$gt:6}  } , {name:1,_id:0} 
+- db.listingsAndReviews.findOne( { number_of_reviews: 50 , accommodates: {$gt:6}  } , {name:1,_id:0}) 
 
 ### Solución ->  name: 'Sunset Beach Lodge Retreat'
 
