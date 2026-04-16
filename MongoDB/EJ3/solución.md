@@ -23,7 +23,7 @@
 ## Pregunta 3:
 
 - use sample_training
-- db.trips.find({ "birth year": { $ne: null, $ne: "" } },{ _id: 0, "birth year": 1 }).sort({ "birth year": -1 }).limit(1)
+- db.trips.find({ "birth year": {$ne: "" } },{ _id: 0, "birth year": 1 }).sort({ "birth year": -1 }).limit(1)
 
 ### Solución -> 1999
 
