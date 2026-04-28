@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TVSCHEDULE NAME="Programacion Semanal">
+  <CHANNEL CHAN="La1">
+    <BANNER>Canal principal</BANNER>
+    <DAY>
+      <DATE>2026-04-28</DATE>
+      <PROGRAMSLOT VTR="SI">
+        <TIME>08:00</TIME>
+        <TITLE RATING="TP" LANGUAGE="es">Noticias de la manana</TITLE>
+        <DESCRIPTION>Resumen informativo del dia.</DESCRIPTION>
+      </PROGRAMSLOT>
+      <PROGRAMSLOT>
+        <TIME>10:00</TIME>
+        <TITLE RATING="PG" LANGUAGE="es">Cocina en Casa</TITLE>
+      </PROGRAMSLOT>
+    </DAY>
+    <DAY>
+      <DATE>2026-05-01</DATE>
+      <HOLIDAY>Dia del Trabajador</HOLIDAY>
+    </DAY>
+  </CHANNEL>
+
+  <CHANNEL CHAN="CanalDeportes">
+    <BANNER>Todo deporte</BANNER>
+    <DAY>
+      <DATE>2026-04-28</DATE>
+      <PROGRAMSLOT>
+        <TIME>18:00</TIME>
+        <TITLE RATING="PG" LANGUAGE="en">Football Highlights</TITLE>
+        <DESCRIPTION>Resumen de los mejores partidos.</DESCRIPTION>
+      </PROGRAMSLOT>
+    </DAY>
+  </CHANNEL>
+</TVSCHEDULE>

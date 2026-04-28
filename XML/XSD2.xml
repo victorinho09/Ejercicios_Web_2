@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Orderdetails>
+	<Customer id="10">
+		<fname from="web">Victor</fname>
+		<cname>Acme Corp</cname>
+		<destination Country="Spain" Delivdate="2026-04-28">Madrid</destination>
+		<email>victor@ejemplo.com</email>
+		<eid>E102</eid>
+	</Customer>
+	<Customer id="25">
+		<destination Country="France" Delivdate="2026-05-02">Paris</destination>
+	</Customer>
+</Orderdetails>
